@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Maria Helena ♥</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#000; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:Arial; overflow:hidden; }
+  .wrap { position:relative; width:340px; height:320px; }
+  canvas { width:100%; height:100%; }
+  .nome {
+    position:absolute; top:48%; left:50%; transform:translate(-50%,-50%);
+    text-align:center; z-index:10; width:100%;
+    background:rgba(0,0,0,0.55); padding:10px 0; border-radius:15px;
+    animation: piscar 0.8s infinite;
+  }
+  .nome .p { color:#ff4da6; font-size:23px; font-weight:bold; text-shadow:0 0 15px #ff4da6; }
+  .nome .s { color:#fff; font-size:13px; margin-top:4px; letter-spacing:3px; }
+  @keyframes piscar { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  button { background:#ff4da6; color:#fff; border:none; padding:14px 22px; border-radius:50px; font-size:15px; font-weight:bold; margin-top:15px; box-shadow:0 0 20px #ff4da6; }
+  .dica { color:#aaa; font-size:12px; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <canvas id="c"></canvas>
+  <div class="nome">
+    <div class="p">♥ MARIA HELENA ♥</div>
+    <div class="s">DOIS CORAÇÕES</div>
+  </div>
+</div>
+
+<button onclick="tocar()" id="btn">▶ TOCAR - MELIM - DOIS CORAÇÕES</button>
+<div class="dica">Toque no botão para a música começar</div>
+<div id="player"></div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+canvas.width = 340; canvas.height = 320;
+const letras = ["♥","♥","♥","•","♥"];
+let escala = 1;
+
+function desenhar(){
+  ctx.clearRect(0,0,340,320);
+  ctx.fillStyle = "#ff2a5a";
+  ctx.font = "bold 14px Arial";
+  ctx.textAlign = "center";
+  for(let y=-13; y<14; y++){
+    for(let x=-16; x<17; x++){
+      let xx = x/15 * escala;
+      let yy = y/12 * escala;
+      let eq = Math.pow(xx*xx + yy*yy - 1, 3) - xx*xx * yy*yy*yy;
+      if(eq < 0){
+        // Pula o meio onde fica o nome, pra não cobrir
+        if(y > -2 && y < 3 && x > -10 && x < 11) continue;
+        let l = letras[Math.floor(Math.random()*letras.length)];
+        ctx.fillText(l, 170 + x*10, 155 + y*11);
+      }
+    }
+  }
+}
+desenhar();
+setInterval(()=>{ escala = escala===1 ? 0.94 : 1; desenhar(); }, 600);
+
+function tocar(){
+  document.getElementById('player').innerHTML = '<iframe width="1" height="1" src="https://www.youtube.com/embed/8bQw1sTg0y8?autoplay=1&loop=1&playlist=8bQw1sTg0y8" allow="autoplay"></iframe>';
+  document.getElementById('btn').innerText = "♪ TOCANDO: MELIM - DOIS CORAÇÕES ♪";
+}
+</script>
+</body>
+</html>
